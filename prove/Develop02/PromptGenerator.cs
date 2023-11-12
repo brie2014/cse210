@@ -2,7 +2,7 @@ using System;
 
 class PromptGenerator
 {
-    private List<string> _prompts = new List<string>(){
+    private readonly List<string> prompts = new List<string>(){
         "What was your day like?",
         "How did you help someone today?",
         "Who was the most interesting person I interacted with today?",
@@ -22,9 +22,9 @@ class PromptGenerator
     {
         // Generate random number
         Random rnd = new Random();
-        int num = rnd.Next(0, _prompts.Count());
+        int num = rnd.Next(0, prompts.Count);
         // Access prompt at the index of that random number
-        string randomPrompt = _prompts[num];
+        string randomPrompt = prompts[num];
         return randomPrompt;
     }
 

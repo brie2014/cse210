@@ -2,10 +2,10 @@ using System;
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
-        Journal journal = new Journal();
-        PromptGenerator promptGenerator = new PromptGenerator();
+        Journal journal = new();
+        PromptGenerator promptGenerator = new();
 
         Console.WriteLine("Welcome to the Journal Program");
         string userChoice = "start";
@@ -20,11 +20,11 @@ class Program
                     string prompt = promptGenerator.GetRandomPrompt();
                     Console.Write(prompt);
                     string userResponse = Console.ReadLine();
-                    Entry newEntry = new Entry()
+                    Entry newEntry = new()
                     {
-                        _date = DateTime.Now.ToString("MM/dd/yyyy"),
-                        _promptText = prompt,
-                        _entryText = userResponse,
+                        Date = DateTime.Now.ToString("MM/dd/yyyy"),
+                        PromptText = prompt,
+                        EntryText = userResponse,
                     };
                     journal.AddEntry(newEntry);
                     break;
