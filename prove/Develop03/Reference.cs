@@ -26,7 +26,12 @@ class Reference
     // Methods
     public string GetDisplayText()
     {
-
+        var baseDisplayText = $"{_book} {_chapter}:{_verse}";
+        if (_endVerse > 0)
+        {
+            return $"{baseDisplayText}-{_endVerse}";
+        }
+        return baseDisplayText;
     }
 
 }

@@ -16,17 +16,21 @@ class Word
     // Methods
     public void Hide()
     {
-
-    }
-    public void Show()
-    {
+        _isHidden = true;
 
     }
     public bool IsHidden()
     {
+        return _isHidden;
     }
     public string GetDisplayText()
     {
+        if (_isHidden)
+        {
+            string replacedString = new String(_text.Select(l => '_').ToArray());
+            return replacedString;
+        }
+        return _text;
     }
 
 }
