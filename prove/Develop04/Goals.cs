@@ -1,8 +1,8 @@
 public class Goals
 {
     // Attributes
-    int _timeGoal;
-    int _exercisesGoal;
+    private int _timeGoal;
+    private int _exercisesGoal;
 
     //Methods 
     public void SetGoals()
