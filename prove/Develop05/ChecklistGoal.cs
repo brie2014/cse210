@@ -11,11 +11,19 @@ public class ChecklistGoal : Goal
         _bonus = bonus;
     }
 
+    public void SetAmountCompleted(int amountCompleted)
+    {
+        _amountCompleted = amountCompleted;
+    }
+
+
     public override int RecordEvent()
     {
         _amountCompleted++;
-        if (IsComplete())
+        if (_amountCompleted == _target)
         {
+            Console.WriteLine();
+            Console.WriteLine($"You just got a bonus for completing your goal {_target} times!");
             return GetPoints() + _bonus;
         }
         return GetPoints();
@@ -32,6 +40,6 @@ public class ChecklistGoal : Goal
 
     public override string GetStringRepresentation()
     {
-        return "";
+        return $"ChecklistGoal,{base.GetStringRepresentation()},{_amountCompleted},{_target},{_bonus}";
     }
 }

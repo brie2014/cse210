@@ -3,7 +3,6 @@ public class GoalManager
 {
 
     private List<Goal> _goals;
-
     private int _score;
 
     public GoalManager()
@@ -18,6 +17,7 @@ public class GoalManager
         while (userChoice != "6")
         {
             DisplayPlayerInfo();
+            CheckLevel();
             ShowMenu();
             userChoice = Console.ReadLine();
             switch (userChoice)
@@ -69,6 +69,30 @@ public class GoalManager
     {
         Console.WriteLine();
         Console.WriteLine($"You have {_score} points.");
+    }
+
+    public void CheckLevel()
+    {
+        if (_score > 500)
+        {
+            Console.WriteLine("Level 5: Sensai of Goals");
+        }
+        else if (_score > 400)
+        {
+            Console.WriteLine("Level 4: Epic Accomplisher");
+        }
+        else if (_score > 300)
+        {
+            Console.WriteLine("Level 3: Unicorn Apprentice");
+        }
+        else if (_score > 200)
+        {
+            Console.WriteLine("Level 2: Ninja Intern");
+        }
+        else if (_score > 100)
+        {
+            Console.WriteLine("Level 1: Senior Noob");
+        }
     }
     public void ListGoalNames()
     {
@@ -144,7 +168,10 @@ public class GoalManager
         ListGoalNames();
         Console.Write("Which goal did you accomplish? ");
         var goalIndex = Convert.ToInt32(Console.ReadLine()) - 1;
-        _goals[goalIndex].RecordEvent();
+        var pointsToAdd = _goals[goalIndex].RecordEvent();
+        _score += pointsToAdd;
+        Console.WriteLine($"Congratulations! You just earned {pointsToAdd} points.");
+        Console.WriteLine($"You now have {_score} points.");
     }
     public void SaveGoals()
     {
@@ -167,11 +194,20 @@ public class GoalManager
 
         using (StreamWriter outputFile = new StreamWriter(fileName))
         {
-            outputFile.Write(JsonSerializer.Serialize(_goals));
+            outputFile.WriteLine(_score);
+            foreach (Goal goal in _goals)
+            {
+                outputFile.WriteLine(goal.GetStringRepresentation());
+            }
+
         }
+
     }
     public void LoadGoals()
     {
+        // Reset goals to empty list
+        _goals = new();
+
         // Get filename from user
         Console.Write("Please enter the name of the file to load: ");
         string fileName = Console.ReadLine();
@@ -181,10 +217,49 @@ public class GoalManager
             Console.WriteLine("That file does not exist.");
             return;
         }
-        // Read from JSON file;
-        string jsonString = File.ReadAllText(fileName);
+        string[] lines = System.IO.File.ReadAllLines(fileName);
+        var i = 0;
+        foreach (string line in lines)
+        {
+            // First line has the score;
+            if (i == 0)
+            {
+                _score = Convert.ToInt32(line);
+                i++;
+                continue;
+            }
+            string[] parts = line.Split(",");
 
-        // Deserialize json back to a list of entries and set the entries to the loaded value
-        _goals = JsonSerializer.Deserialize<List<Goal>>(jsonString)!;
+            string type = parts[0];
+            string name = parts[1];
+            string description = parts[2];
+            int points = Convert.ToInt32(parts[3]);
+
+            switch (type)
+            {
+                // Simple Goal
+                case "SimpleGoal":
+                    bool isComplete = Convert.ToBoolean(parts[4]);
+                    SimpleGoal simpleGoal = new(name, description, points);
+                    simpleGoal.SetIsComplete(isComplete);
+                    _goals.Add(simpleGoal);
+                    break;
+                // Eternal Goal
+                case "EternalGoal":
+                    EternalGoal eternalGoal = new(name, description, points);
+                    _goals.Add(eternalGoal);
+                    break;
+                // Checklist Goal
+                case "ChecklistGoal":
+                    int amountCompleted = Convert.ToInt32(parts[4]);
+                    int target = Convert.ToInt32(parts[5]);
+                    int bonus = Convert.ToInt32(parts[6]);
+                    ChecklistGoal checklistGoal = new(name, description, points, target, bonus);
+                    checklistGoal.SetAmountCompleted(amountCompleted);
+                    _goals.Add(checklistGoal);
+                    break;
+            }
+
+        }
     }
 }
