@@ -1,10 +1,10 @@
 public abstract class Event
 {
-    string _title;
-    string _description;
-    DateTime _date;
-    string _time;
-    Address _address;
+    private string _title;
+    private string _description;
+    private DateTime _date;
+    private string _time;
+    private Address _address;
 
     public Event(string title, string description, DateTime date, string time, Address address)
     {
