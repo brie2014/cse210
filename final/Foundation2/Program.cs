@@ -24,6 +24,7 @@ class Program
         order2.SetCustomer(customer2);
         order2.AddProduct(product5);
         order2.AddProduct(product2);
+        order2.AddProduct(product3);
 
         // Put orders in a list
         var orders = new List<Order>() { order1, order2 };

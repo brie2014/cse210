@@ -21,6 +21,6 @@ public class Product
 
     public string GetDetailsString()
     {
-        return $"{_productId}: {_name} --- ${_price} x {_quantity}";
+        return $"ID#{_productId}: {_name} --- ${_price} x {_quantity}";
     }
 }
