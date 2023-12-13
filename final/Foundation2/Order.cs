@@ -26,7 +26,13 @@ public class Order
             var costToAdd = product.GetPrice();
             cost += costToAdd;
         }
-        return $"${cost}";
+        var shipping = 30;
+        if (_customer.LivesInUSA())
+        {
+            shipping = 5;
+        }
+
+        return $"SubTotal: ${cost} | Shipping: ${shipping} | Total: ${cost + shipping}";
     }
 
     public void ShowPackingLabel()
