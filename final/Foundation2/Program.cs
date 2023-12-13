@@ -32,9 +32,11 @@ class Program
         // Display information about each order        
         foreach (Order order in orders)
         {
+            Console.WriteLine("----Packing Label----");
             Console.WriteLine(order.GetTotalCost());
             order.ShowPackingLabel();
             Console.WriteLine();
+            Console.WriteLine("----Shipping Label----");
             order.ShowShippingLabel();
             Console.WriteLine();
         }
